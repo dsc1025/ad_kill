@@ -1,0 +1,18 @@
+{
+  "css": [
+    {
+      "position": "absolute"
+    },
+    {
+      "position": "fixed"
+    }
+  ],
+  "html": [],
+  "js": [],
+  "key": [
+    "广告",
+    "google",
+    "baidu"
+  ],
+  "class":["mod_banner", "mod_ad"]
+}
