@@ -52,7 +52,7 @@ class jsonDataFileLoad extends fileLoad {
 
     getJsonValue(key) {
         let nodeChildren = this.jsonData[key];
-        return nodeChildren
+        return nodeChildren;
     }
 
     done(f) {
@@ -63,22 +63,37 @@ class jsonDataFileLoad extends fileLoad {
 class adContainer {
     constructor(keys) {
         this.keys = keys;
+        this.elements = null;
         this.seek()
     }
 
     seek() {
-        let str = "", dom = null;
+        let str = "";
         if (this.keys.length > 0) {
-            this.keys.forEach(function (k, i) {
-                str = "." + k;
-                dom = document.querySelectorAll(str);
-                this.modifyStyle(dom);
+            this.keys.forEach(function(k, i){
+                switch(k){
+                    case "class" :
+                        console.log(this)
+                        /*this.keys.forEach(function (k, i) {
+                         str = "." + k;
+                         this.elements = document.querySelectorAll(str);
+                         });*/
+                        break;
+                    case "id" :
+                        break;
+                }
             })
+
+
         }
     }
 
-    modifyStyle(dom) {
-        dom.style.border = "1px soild black";
+    static modifyCSSStyle(elements) {
+        if (elements.length > 0) {
+            elements.forEach(function (elem, i) {
+                elem.style.border = "1px solid black";
+            })
+        }
     };
 }
 
