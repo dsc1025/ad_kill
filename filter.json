@@ -1,18 +1,9 @@
 {
   "style": [
-    {
-      "position": "absolute"
-    },
-    {
-      "position": "fixed"
-    }
+    "absolute",
+    "fixed"
   ],
-  "html": [],
-  "js": [],
-  "key": [
-    "广告",
-    "google",
-    "baidu"
-  ],
-  "class":["mod_banner", "mod_ad_%d"]
+  "Regexp": [
+    "mod_banner_?\\w*"
+  ]
 }

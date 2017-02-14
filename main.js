@@ -40,24 +40,56 @@ class jsonDataFileLoad extends fileLoad {
         this.jsonData = JSON.parse(this.xhr.response) || null;
     }
 
-    get keyList() {
+    getKeyList() {
         let keyArray = [];
         if (this.jsonData) {
             for (let k in this.jsonData) {
                 keyArray.push(k);
             }
         }
-        return keyArray
+        return keyArray;
     }
 
     getJsonValue(key) {
-        let nodeChildren = this.jsonData[key];
-        return nodeChildren;
+        this.key = key || null;
+        this.nodeChildren = null;
+        if (this.key) {
+            this.nodeChildren = this.jsonData[this.key];
+        } else {
+            if (this.getKeyList().length > 0) {
+                let arr = new Array();
+                for (let i in this.getKeyList()) {
+                    arr.push(this.jsonData[this.getKeyList()[i]]);
+                }
+                this.nodeChildren = arr;
+            }
+        }
+        return this.nodeChildren;
     }
 
     done(f) {
         f();
     }
+}
+
+class Utils {
+    static uniqueArrayProperty(arr) {
+        let obj = new Object();
+        let b = [];
+
+        if (arr.length > 0) {
+            for (let i in arr) {
+                if (arr[i] instanceof Array) {
+                    Utils.uniqueArrayProperty(arr[i]);
+                } else {
+                    obj[arr[i]] = 0;
+                }
+            }
+            console.log(obj)
+        }
+
+    }
+
 }
 
 class adContainer {
@@ -69,44 +101,52 @@ class adContainer {
 
     seek() {
         let str = "";
-        if (this.keys.length > 0) {
-            this.keys.forEach(function(k, i){
-                switch(k){
-                    case "class" :
-                        console.log(this)
-                        /*this.keys.forEach(function (k, i) {
-                         str = "." + k;
-                         this.elements = document.querySelectorAll(str);
-                         });*/
-                        break;
-                    case "id" :
-                        break;
-                }
-            })
-
-
-        }
+        /*if (this.keys) {
+         if (this.keys.length > 0) {
+         }
+         }*/
+        console.log(this.keys)
     }
 
-    static modifyCSSStyle(elements) {
-        if (elements.length > 0) {
-            elements.forEach(function (elem, i) {
-                elem.style.border = "1px solid black";
-            })
+    static fromElementClassName(keys) {
+        if (keys.length > 0) {
+            for (var k in keys) {
+                let arr = keys[k];
+                for (var a in arr) {
+                    let elements = document.querySelectorAll("." + arr[a]);
+                    console.log(elements)
+                }
+            }
         }
     };
 }
 
+class Core {
+    constructor(key) {
+        this.key = key || null;
+        this.body = document.querySelector("body").innerHTML;
+        this.arr = [];
+        this.init();
+    }
 
-var json = new jsonDataFileLoad("/test2/filter.json");
-var foo = new adContainer(json.getJsonValue("class"));
+    init() {
+        let json = new jsonDataFileLoad("/test2/filter.json");
+        this.keyToHtml(json.getJsonValue(this.key));
+        Utils.uniqueArrayProperty(this.arr);
+        //adContainer.fromElementClassName(this.arr);
+    }
 
-
-class main {
-    static init() {
-        var json = new jsonDataFileLoad("/test2/filter.json");
-        json.keyList.forEach(function (k, i) {
-            console.log(json.getJsonValue(k))
-        });
+    keyToHtml(keys) {
+        if (keys.length > 0) {
+            for (let i in keys) {
+                if (keys[i] instanceof Array) {
+                    this.keyToHtml(keys[i]);
+                } else {
+                    this.arr.push(this.body.match(new RegExp(keys[i], "g")));
+                }
+            }
+        }
     }
 }
+
+var core = new Core("Regexp");
