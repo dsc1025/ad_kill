@@ -74,51 +74,35 @@ class jsonDataFileLoad extends fileLoad {
 
 class Utils {
     static uniqueArrayProperty(arr) {
-        let obj = new Object();
-        let b = [];
-
         if (arr.length > 0) {
+            let tmp = new Array();
             for (let i in arr) {
-                if (arr[i] instanceof Array) {
-                    Utils.uniqueArrayProperty(arr[i]);
-                } else {
-                    obj[arr[i]] = 0;
+                if (tmp.indexOf(arr[i]) == -1) {
+                    tmp.push(arr[i]);
                 }
             }
-            console.log(obj)
+            return tmp;
         }
-
     }
-
 }
 
 class adContainer {
-    constructor(keys) {
-        this.keys = keys;
-        this.elements = null;
-        this.seek()
-    }
-
-    seek() {
-        let str = "";
-        /*if (this.keys) {
-         if (this.keys.length > 0) {
-         }
-         }*/
-        console.log(this.keys)
-    }
-
-    static fromElementClassName(keys) {
+    static seekElementClassName(keys) {
         if (keys.length > 0) {
-            for (var k in keys) {
-                let arr = keys[k];
-                for (var a in arr) {
-                    let elements = document.querySelectorAll("." + arr[a]);
-                    console.log(elements)
+            for (let i in keys) {
+                let elements = document.querySelectorAll("." + keys[i]);
+                if (elements.length > 0) {
+                    elements.forEach(function (e, i) {
+                        adContainer.ModiftElementStyle(e);
+                    })
                 }
             }
         }
-    };
+    }
+
+    static ModiftElementStyle(el){
+        el.style.border = "1px solid red";
+    }
 }
 
 class Core {
@@ -132,8 +116,14 @@ class Core {
     init() {
         let json = new jsonDataFileLoad("/test2/filter.json");
         this.keyToHtml(json.getJsonValue(this.key));
-        Utils.uniqueArrayProperty(this.arr);
-        //adContainer.fromElementClassName(this.arr);
+
+        let keys = [];
+        if (this.arr.length > 0) {
+            for (let i in this.arr) {
+                keys = Utils.uniqueArrayProperty(this.arr[i]);
+                adContainer.seekElementClassName(keys);
+            }
+        }
     }
 
     keyToHtml(keys) {
@@ -149,4 +139,4 @@ class Core {
     }
 }
 
-var core = new Core("Regexp");
+var core = new Core();
