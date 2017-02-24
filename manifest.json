@@ -18,5 +18,9 @@
       "js":["main.js"],
       "matches": ["http://*/*","https://*/*"]
     }
-  ]
+  ],
+
+  "background": {
+    "scripts": ["background.js"]
+  }
 }
