@@ -4,6 +4,8 @@
     "fixed"
   ],
   "Regexp": [
-    "mod_banner_?\\w*"
+    "mod_banner_?\\w*",
+    "kds_mod",
+    "kds_banner"
   ]
 }

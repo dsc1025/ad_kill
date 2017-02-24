@@ -1,6 +1,19 @@
 /**
  * Created by shaochong.ding on 2017/2/7.
  */
+var json = {
+    "style": [
+        "absolute",
+        "fixed"
+    ],
+    "Regexp": [
+        "mod_banner_?\\w*",
+        "kds_mod",
+        "kds_banner"
+    ]
+}
+
+
 
 class fileLoad {
     constructor(url) {
@@ -114,7 +127,7 @@ class Core {
     }
 
     init() {
-        let json = new jsonDataFileLoad("/test2/filter.json");
+        let json = new jsonDataFileLoad("filter.json");
         this.keyToHtml(json.getJsonValue(this.key));
 
         let keys = [];
@@ -133,6 +146,7 @@ class Core {
                     this.keyToHtml(keys[i]);
                 } else {
                     this.arr.push(this.body.match(new RegExp(keys[i], "g")));
+
                 }
             }
         }

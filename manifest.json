@@ -1,0 +1,22 @@
+{
+  "name": "AD Killer",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "author":"dsc",
+  "icons": {
+    "64": "Trade_Engineering.png"
+  },
+  "browser_action": {
+    "default_icon": "Trade_Engineering.png",
+    "default_popup": "index.html"
+  },
+  "permissions": [
+    "tabs","http://*/*","https://*/*"
+  ],
+  "content_scripts": [
+    {
+      "js":["main.js"],
+      "matches": ["http://*/*","https://*/*"]
+    }
+  ]
+}
