@@ -74,9 +74,8 @@ chrome.extension.onRequest.addListener(function (request, sender, sendResponse) 
         switch(request){
             case "getJson":
                 let json = new jsonDataFileLoad("filter.json");
-                sendResponse(json)
+                sendResponse(json);
                 break;
         }
     }
-
 });

@@ -3,9 +3,15 @@
     "absolute",
     "fixed"
   ],
-  "Regexp": [
+  "class": [
     "mod_banner_?\\w*",
     "kds_mod",
-    "kds_banner"
+    "kds_banner",
+    "slideBox",
+    "adsbygoogle",
+    "adL"
+  ],
+  "id":[
+    "BAIDU_SSP_{2}\\w+"
   ]
 }

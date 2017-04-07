@@ -7,7 +7,7 @@ class Utils {
                     tmp.push(arr[i]);
                 }
             }
-            return tmp;
+            return tmp.toString();
         }
     }
 }
@@ -26,9 +26,26 @@ class adContainer {
         }
     }
 
+    static seekElementIdName(keys) {
+        if (keys.length > 0) {
+            for (let i in keys) {
+                let elements = document.querySelectorAll("#" + keys[i]);
+                if (elements.length > 0) {
+                    elements.forEach(function (e, i) {
+                        adContainer.ModiftElementStyle(e);
+                    })
+                }
+            }
+        }
+    }
+
     static ModiftElementStyle(el) {
         el.style.border = "1px solid red";
+        el.style.pointerEvents = "none";
+        el.innerHTML = "";
     }
+
+    static
 }
 
 class Core {
@@ -37,30 +54,36 @@ class Core {
         this.body = document.querySelector("body").innerHTML;
         this.arr = [];
         this.init();
+
     }
 
     init() {
-        let json = new jsonDataFileLoad("filter.json");
-        this.keyToHtml(json.getJsonValue(this.key));
-
+        this.keyToHtml(this.key);
         let keys = [];
         if (this.arr.length > 0) {
             for (let i in this.arr) {
-                keys = Utils.uniqueArrayProperty(this.arr[i]);
-                adContainer.seekElementClassName(keys);
+                if (this.arr[i]) {
+                    let str = Utils.uniqueArrayProperty(this.arr[i]);
+                    keys.push(str)
+                }
+            }
+            adContainer.seekElementClassName(keys);
+            switch (type) {
+                case "id":
+                    break;
+                case "class":
+                    break;
             }
         }
+
     }
 
     keyToHtml(keys) {
-        if (keys.length > 0) {
-            for (let i in keys) {
-                if (keys[i] instanceof Array) {
-                    this.keyToHtml(keys[i]);
-                } else {
-                    this.arr.push(this.body.match(new RegExp(keys[i], "g")));
-
-                }
+        for (let i in keys) {
+            if (keys[i] instanceof Array) {
+                this.keyToHtml(keys[i]);
+            } else {
+                this.arr.push(this.body.match(new RegExp(keys[i], "g")));
             }
         }
     }
@@ -68,6 +91,7 @@ class Core {
 
 //var core = new Core();
 
-chrome.extension.sendRequest("getJson", function(response){
-    console.log(response)
+chrome.extension.sendRequest("getJson", function (response) {
+    var c = new Core(response.jsonData.class);
+    var i = new Core(response.jsonData.id);
 })
