@@ -7,7 +7,7 @@ class Utils {
                     tmp.push(arr[i]);
                 }
             }
-            return tmp.toString();
+            return tmp;
         }
     }
 }
@@ -42,14 +42,14 @@ class adContainer {
     static ModiftElementStyle(el) {
         el.style.border = "1px solid red";
         el.style.pointerEvents = "none";
-        el.innerHTML = "";
+        el.innerHTML = "AD killer";
     }
 
-    static
 }
 
 class Core {
-    constructor(key) {
+    constructor(key, type) {
+        this.type = type || null;
         this.key = key || null;
         this.body = document.querySelector("body").innerHTML;
         this.arr = [];
@@ -63,15 +63,15 @@ class Core {
         if (this.arr.length > 0) {
             for (let i in this.arr) {
                 if (this.arr[i]) {
-                    let str = Utils.uniqueArrayProperty(this.arr[i]);
-                    keys.push(str)
+                    keys = keys.concat(Utils.uniqueArrayProperty(this.arr[i]))
                 }
             }
-            adContainer.seekElementClassName(keys);
-            switch (type) {
+            switch (this.type) {
                 case "id":
+                    adContainer.seekElementIdName(keys);
                     break;
                 case "class":
+                    adContainer.seekElementClassName(keys);
                     break;
             }
         }
@@ -92,6 +92,7 @@ class Core {
 //var core = new Core();
 
 chrome.extension.sendRequest("getJson", function (response) {
-    var c = new Core(response.jsonData.class);
-    var i = new Core(response.jsonData.id);
-})
+    for (var type in response.jsonData) {
+        new Core(response.jsonData[type], type)
+    }
+});
